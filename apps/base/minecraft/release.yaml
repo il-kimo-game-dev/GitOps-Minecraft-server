@@ -1,0 +1,116 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: minecraft-server
+  namespace: minecraft
+spec:
+  releaseName: minecraft-server
+  chart:
+    spec:
+      chart: minecraft
+      version: "5.1.1" # Ultima versione del chart al momento
+      sourceRef:
+        kind: HelmRepository
+        name: itzg
+        namespace: minecraft
+  interval: 1h
+  timeout: 10m
+  values:
+    resources:
+      requests:
+        memory: 8G
+        cpu: 2
+      limits:
+        memory: 10G
+        cpu: 6
+
+    # nodeSelector:
+    #   kubernetes.io/hostname: asus
+
+    dnsPolicy: "None"
+    dnsConfig:
+      nameservers:
+        - 8.8.8.8
+        - 1.1.1.1
+      searches:
+        - minecraft.svc.cluster.local
+        - svc.cluster.local
+        - cluster.local
+      options:
+        - name: ndots
+          value: "1"
+
+    minecraftServer:
+      eula: "TRUE"
+      version: "1.21.11"
+      type: "FABRIC"
+      difficulty: hard
+      whitelist: "fraioveio, il_kimo, _AngryPotato_"
+      # ops: "fraioveio"
+      icon: "https://downloads.vecchia.lol/minecraft/aiw5deik7eideyoaph1aexo1eL0ighoh/server-icon.png"
+      motd: "MineKanf: Un server bello fresco"
+
+      viewDistance: 12
+      maxTickTime: 120000
+      memory: 7G
+
+      serviceType: NodePort
+      # Set the external port of the service, useful when using the NodePort service type
+      servicePort: 25565
+      nodePort: 30565
+
+      extraPorts:
+        - name: voice
+          containerPort: 24454
+          protocol: UDP
+          service:
+            enabled: true
+            embedded: true
+            port: 24454
+            type: NodePort
+            nodePort: 30454
+        - name: nebulaagent
+          containerPort: 7458
+          protocol: TCP
+          service:
+            enabled: true
+            port: 7458
+            type: ClusterIP
+        - name: bluemap
+          containerPort: 8100
+          protocol: TCP
+          service:
+            enabled: true
+            port: 8100
+            type: ClusterIP
+
+      rcon:
+        enabled: true
+        withGeneratedPassword: false # o true se vuoi una password generata automaticamente
+        port: 25575
+        password: "mTdqHXpD2R4mU637" # cambia questo!
+        serviceType: ClusterIP
+
+      # modUrls:
+      #   - "https://cdn.modrinth.com/data/P7dR8mSH/versions/i5tSkVBH/fabric-api-0.141.3%2B1.21.11.jar"
+      #   - "https://cdn.modrinth.com/data/VSNURh3q/versions/olrVZpJd/c2me-fabric-mc1.21.11-0.3.6.0.0.jar"
+      #   - "https://cdn.modrinth.com/data/9eGKb6K1/versions/1OVXKX2W/voicechat-fabric-1.21.11-2.6.11.jar"
+      #   - "https://cdn.modrinth.com/data/1bokaNcj/versions/FVddJATL/xaerominimap-fabric-1.21.11-25.3.9.jar"
+      #   - "https://github.com/gnembon/fabric-carpet/releases/download/1.4.194/fabric-carpet-1.21.11-1.4.194+v251223.jar"
+      #   #- "https://cdn.modrinth.com/data/6FtRfnLg/versions/QyuEXDMC/do_a_barrel_roll-fabric-3.8.3%2B1.21.11.jar"
+      #   #- "https://cdn.modrinth.com/data/IwCkru1D/versions/CqAskfnS/cicada-lib-0.14.3%2B1.21.9-1.21.10.jar" # Dipendenza do a barrel roll
+      #   - "https://cdn.modrinth.com/data/swbUV1cr/versions/gpuTeXXq/bluemap-5.15-fabric.jar"
+      #   - "https://cdn.modrinth.com/data/zQhsx8KF/versions/wdbe92T5/servux-fabric-1.21.11-0.9.2.jar"
+      #   - "https://cdn.modrinth.com/data/uCdwusMi/versions/GT3Bm3GN/DistantHorizons-2.4.5-b-1.21.11-fabric-neoforge.jar"
+      #   - "https://cdn.modrinth.com/data/vz3NiXrd/versions/OqrILcxr/bat-membrane-v3.1.2.jar"
+      #   - "https://cdn.modrinth.com/data/z9nwMi0g/versions/MLOwWTP5/better-serversleep-better-server-sleep-1.21.11.jar"
+      #   - "https://downloads.vecchia.lol/minecraft/aiw5deik7eideyoaph1aexo1eL0ighoh/nebulaagent-1.2.0.jar"
+
+    persistence:
+      dataDir:
+        # Set this to false if you don't care to persist state between restarts.
+        enabled: true
+        Size: 100Gi
+        accessModes:
+          - ReadWriteOnce
+        existingClaim: minecraft-pvc
