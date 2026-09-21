@@ -4,9 +4,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: minecraft-pvc
 spec:
-  storageClassName: standard
+  storageClassName: standard # kind: default StorageClass (local-path provisioner), change for other clusters
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 10Gi # kind: small local size

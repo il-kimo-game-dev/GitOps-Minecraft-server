@@ -49,10 +49,10 @@ spec:
       maxTickTime: 120000
       memory: 7G
 
-      serviceType: NodePort
+      serviceType: NodePort # kind: reached from the host via extraPortMappings in kind/kind_dev-config.yaml
       # Set the external port of the service, useful when using the NodePort service type
       servicePort: 25565
-      nodePort: 30565
+      nodePort: 30565 # kind: must match containerPort in kind/kind_dev-config.yaml
 
       # extraPorts:
       #   - name: voice
@@ -89,7 +89,7 @@ spec:
       dataDir:
         # Set this to false if you don't care to persist state between restarts.
         enabled: true
-        Size: 10Gi
+        Size: 10Gi # kind: local sizing, ignored by the chart when existingClaim is set
         accessModes:
           - ReadWriteOnce
         existingClaim: minecraft-pvc
