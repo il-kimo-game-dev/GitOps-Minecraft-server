@@ -22,9 +22,6 @@ spec:
         memory: 10G
         cpu: 6
 
-    # nodeSelector:
-    #   kubernetes.io/hostname: asus
-
     dnsPolicy: "None"
     dnsConfig:
       nameservers:
@@ -40,13 +37,13 @@ spec:
 
     minecraftServer:
       eula: "TRUE"
-      version: "1.21.11"
+      version: "26.3"
       type: "FABRIC"
       difficulty: hard
-      whitelist: "fraioveio, il_kimo, _AngryPotato_"
-      # ops: "fraioveio"
-      icon: "https://downloads.vecchia.lol/minecraft/aiw5deik7eideyoaph1aexo1eL0ighoh/server-icon.png"
-      motd: "MineKanf: Un server bello fresco"
+      whitelist: "il_kimo"
+      ops: "il_kimo"
+      # icon: "https://downloads.vecchia.lol/minecraft/aiw5deik7eideyoaph1aexo1eL0ighoh/server-icon.png"
+      motd: "Mod dev server"
 
       viewDistance: 12
       maxTickTime: 120000
@@ -57,23 +54,16 @@ spec:
       servicePort: 25565
       nodePort: 30565
 
-      extraPorts:
-        - name: voice
-          containerPort: 24454
-          protocol: UDP
-          service:
-            enabled: true
-            embedded: true
-            port: 24454
-            type: NodePort
-            nodePort: 30454
-        - name: nebulaagent
-          containerPort: 7458
-          protocol: TCP
-          service:
-            enabled: true
-            port: 7458
-            type: ClusterIP
+      # extraPorts:
+      #   - name: voice
+      #     containerPort: 24454
+      #     protocol: UDP
+      #     service:
+      #       enabled: true
+      #       embedded: true
+      #       port: 24454
+      #       type: NodePort
+      #       nodePort: 30454
 
       rcon:
         enabled: true
