@@ -22,7 +22,9 @@ nodes:
 Create the cluster with it:
 
 ```sh
-kind create cluster --name kind-dev --config clusters/kind_dev/kind-config.yaml
+kind create cluster --name minecraft-dev \
+  --config clusters/kind_dev/kind-config.yaml \
+  --kubeconfig ~/.kube/clusters/kind/minecraft_dev/config
 ```
 
 Then connect your Minecraft client to `localhost:25565`.
@@ -30,7 +32,7 @@ Then connect your Minecraft client to `localhost:25565`.
 Notes:
 
 - Port mappings can only be set when the cluster is created. To change them,
-  delete and recreate the cluster (`kind delete cluster --name kind-dev`).
+  delete and recreate the cluster (`kind delete cluster --name minecraft-dev --kubeconfig ~/.kube/clusters/kind/minecraft_dev/config`).
 - `containerPort` must match `minecraftServer.nodePort` in `release.yaml`
   (currently `30565`). If you enable the voice chat port, map its UDP nodePort
   the same way.
