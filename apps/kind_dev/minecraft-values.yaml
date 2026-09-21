@@ -12,3 +12,14 @@ spec:
         projects:
           - fabric-api
           - fabric-language-kotlin
+    # Mod jars dropped in kind/mods (mounted into the kind node, see kind/kind_dev-config.yaml)
+    extraVolumes:
+      - volumes:
+          - name: local-mods
+            hostPath:
+              path: /mods-dev
+              type: Directory
+        volumeMounts:
+          - name: local-mods
+            mountPath: /mods
+            readOnly: true

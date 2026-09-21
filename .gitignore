@@ -1,0 +1,4 @@
+
+# Local mod jars for the kind_dev cluster (only the README is tracked)
+kind/mods/*
+!kind/mods/README.md

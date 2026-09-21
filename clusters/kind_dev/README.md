@@ -36,3 +36,18 @@ Notes:
 - `containerPort` must match `minecraftServer.nodePort` in `release.yaml`
   (currently `30565`). If you enable the voice chat port, map its UDP nodePort
   the same way.
+
+## Testing a local mod
+
+Jars placed in [`kind/mods/`](../../kind/mods/) (git-ignored, see its README)
+are mounted into the kind node via `extraMounts` and from there into the
+pod at `/mods`. Create the cluster from the repository root, because the
+mount path in `kind/kind_dev-config.yaml` is relative. After copying or
+rebuilding a jar, restart the server so Fabric reloads it:
+
+```sh
+kubectl -n minecraft rollout restart deploy/minecraft-server
+```
+
+Fabric API and Fabric Language Kotlin are installed from Modrinth by
+`apps/kind_dev/minecraft-values.yaml`.
