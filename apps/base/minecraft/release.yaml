@@ -69,7 +69,7 @@ spec:
         enabled: true
         withGeneratedPassword: false # o true se vuoi una password generata automaticamente
         port: 25575
-        password: "mTdqHXpD2R4mU637" # cambia questo!
+        password: "ChangeMeInOverlay"
         serviceType: ClusterIP
 
       # modUrls:
