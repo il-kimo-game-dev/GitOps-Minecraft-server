@@ -84,7 +84,6 @@ spec:
       #   - "https://cdn.modrinth.com/data/uCdwusMi/versions/GT3Bm3GN/DistantHorizons-2.4.5-b-1.21.11-fabric-neoforge.jar"
       #   - "https://cdn.modrinth.com/data/vz3NiXrd/versions/OqrILcxr/bat-membrane-v3.1.2.jar"
       #   - "https://cdn.modrinth.com/data/z9nwMi0g/versions/MLOwWTP5/better-serversleep-better-server-sleep-1.21.11.jar"
-      #   - "https://downloads.vecchia.lol/minecraft/aiw5deik7eideyoaph1aexo1eL0ighoh/nebulaagent-1.2.0.jar"
 
     persistence:
       dataDir:
