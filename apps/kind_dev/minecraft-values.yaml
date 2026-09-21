@@ -7,11 +7,15 @@ spec:
     minecraftServer:
       rcon:
         password: "kind-dev-rcon"
+      # 64x64 icon delivered by the minecraft-server-icon ConfigMap (kustomization.yaml)
+      icon: /icon/server-icon.png
       # Server-side dependencies of the mod under development
       modrinth:
         projects:
           - fabric-api
           - fabric-language-kotlin
+    extraEnv:
+      OVERRIDE_ICON: "true" # replace an existing server-icon.png on restart
     # Mod jars dropped in kind/mods (mounted into the kind node, see kind/kind_dev-config.yaml)
     extraVolumes:
       - volumes:
@@ -22,4 +26,12 @@ spec:
         volumeMounts:
           - name: local-mods
             mountPath: /mods
+            readOnly: true
+      - volumes:
+          - name: server-icon
+            configMap:
+              name: minecraft-server-icon
+        volumeMounts:
+          - name: server-icon
+            mountPath: /icon
             readOnly: true

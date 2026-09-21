@@ -7,3 +7,11 @@ patches:
     target:
       kind: HelmRelease
       name: minecraft-server
+configMapGenerator:
+  - name: minecraft-server-icon
+    namespace: minecraft
+    files:
+      - server-icon.png
+generatorOptions:
+  # The HelmRelease values reference the name, so it must be stable
+  disableNameSuffixHash: true
