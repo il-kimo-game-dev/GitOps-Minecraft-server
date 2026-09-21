@@ -8,7 +8,7 @@ the Minecraft server. It deploys only the `minecraft` app from
 
 Kind nodes are Docker containers, so the server's NodePort is not reachable
 from the host by default. The port mapping is set in the kind cluster config,
-[`kind-config.yaml`](kind-config.yaml), which is not read by Flux:
+[`kind/kind_dev-config.yaml`](../../kind/kind_dev-config.yaml). It is kept outside `clusters/kind_dev/` on purpose: Flux syncs every YAML file in that directory, and a kind `Cluster` is not a Kubernetes resource:
 
 ```yaml
 nodes:
@@ -23,7 +23,7 @@ Create the cluster with it:
 
 ```sh
 kind create cluster --name minecraft-dev \
-  --config clusters/kind_dev/kind-config.yaml \
+  --config kind/kind_dev-config.yaml \
   --kubeconfig ~/.kube/clusters/kind/minecraft_dev/config
 ```
 
