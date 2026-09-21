@@ -8,6 +8,7 @@ only the Minecraft server (`apps/base/minecraft`, via `apps/kind_dev`).
 - [Create the cluster](#create-the-cluster)
 - [Connect to the server](#connect-to-the-server)
 - [Test a local mod](#test-a-local-mod)
+- [Stop and restart](#stop-and-restart)
 
 ## Create the cluster
 
@@ -46,3 +47,28 @@ kubectl -n minecraft rollout restart deploy/minecraft-server
 
 Fabric API and Fabric Language Kotlin come from Modrinth
 (`apps/kind_dev/minecraft-values.yaml`).
+
+## Stop and restart
+
+Stop the node container to free resources. The cluster, Flux and the world
+data are kept:
+
+```sh
+docker stop minecraft-dev-control-plane
+```
+
+Start it again in the next session:
+
+```sh
+docker start minecraft-dev-control-plane
+```
+
+The API server's host port can change after a restart. If `kubectl` can no
+longer connect, refresh the kubeconfig:
+
+```sh
+kind export kubeconfig --name minecraft-dev \
+  --kubeconfig ~/.kube/clusters/kind/minecraft_dev/config
+```
+
+`kind delete cluster` (see above) removes everything, including the world.
