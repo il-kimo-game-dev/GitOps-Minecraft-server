@@ -7,3 +7,8 @@ spec:
     minecraftServer:
       rcon:
         password: "kind-dev-rcon"
+      # Server-side dependencies of the mod under development
+      modrinth:
+        projects:
+          - fabric-api
+          - fabric-language-kotlin
