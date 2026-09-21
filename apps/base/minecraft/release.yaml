@@ -43,7 +43,7 @@ spec:
       whitelist: "il_kimo"
       ops: "il_kimo"
       # icon: "https://downloads.vecchia.lol/minecraft/aiw5deik7eideyoaph1aexo1eL0ighoh/server-icon.png"
-      motd: "Mod dev server"
+      motd: "Qui si fa modding duro!!!"
 
       viewDistance: 12
       maxTickTime: 120000
