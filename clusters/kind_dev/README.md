@@ -1,25 +1,17 @@
 # kind_dev cluster
 
 Flux definitions for a local [kind](https://kind.sigs.k8s.io/) cluster running
-the Minecraft server. It deploys only the `minecraft` app from
-`apps/base/minecraft` (via `apps/kind_dev`).
+only the Minecraft server (`apps/base/minecraft`, via `apps/kind_dev`).
 
-## Exposing the Minecraft server to your machine
+## Table of contents
 
-Kind nodes are Docker containers, so the server's NodePort is not reachable
-from the host by default. The port mapping is set in the kind cluster config,
-[`kind/kind_dev-config.yaml`](../../kind/kind_dev-config.yaml). It is kept outside `clusters/kind_dev/` on purpose: Flux syncs every YAML file in that directory, and a kind `Cluster` is not a Kubernetes resource:
+- [Create the cluster](#create-the-cluster)
+- [Connect to the server](#connect-to-the-server)
+- [Test a local mod](#test-a-local-mod)
 
-```yaml
-nodes:
-  - role: control-plane
-    extraPortMappings:
-      - containerPort: 30565   # nodePort in apps/base/minecraft/release.yaml
-        hostPort: 25565        # port on your machine
-        protocol: TCP
-```
+## Create the cluster
 
-Create the cluster with it:
+Run from the repository root, since paths in the kind config are relative:
 
 ```sh
 kind create cluster --name minecraft-dev \
@@ -27,27 +19,30 @@ kind create cluster --name minecraft-dev \
   --kubeconfig ~/.kube/clusters/kind/minecraft_dev/config
 ```
 
-Then connect your Minecraft client to `localhost:25565`.
+The config lives in [`kind/`](../../kind/kind_dev-config.yaml), not here: Flux
+syncs every YAML file under `clusters/kind_dev/`, and a kind `Cluster` is not a
+Kubernetes resource.
 
-Notes:
+Mounts and port mappings are fixed at creation. To change them, delete the
+cluster (`kind delete cluster --name minecraft-dev --kubeconfig <same file>`)
+and recreate it.
 
-- Port mappings can only be set when the cluster is created. To change them,
-  delete and recreate the cluster (`kind delete cluster --name minecraft-dev --kubeconfig ~/.kube/clusters/kind/minecraft_dev/config`).
-- `containerPort` must match `minecraftServer.nodePort` in `release.yaml`
-  (currently `30565`). If you enable the voice chat port, map its UDP nodePort
-  the same way.
+## Connect to the server
 
-## Testing a local mod
+Kind nodes are containers, so the NodePort is not reachable from the host by
+default. `extraPortMappings` maps host port `25565` to NodePort `30565`
+(`nodePort` in `apps/base/minecraft/release.yaml`; keep them in sync). Connect
+your client to `localhost:25565`.
 
-Jars placed in [`kind/mods/`](../../kind/mods/) (git-ignored, see its README)
-are mounted into the kind node via `extraMounts` and from there into the
-pod at `/mods`. Create the cluster from the repository root, because the
-mount path in `kind/kind_dev-config.yaml` is relative. After copying or
-rebuilding a jar, restart the server so Fabric reloads it:
+## Test a local mod
+
+Jars in [`kind/mods/`](../../kind/mods/) (git-ignored) are mounted into the
+pod at `/mods` through `extraMounts`. Fabric loads mods at startup, so restart
+after changing a jar:
 
 ```sh
 kubectl -n minecraft rollout restart deploy/minecraft-server
 ```
 
-Fabric API and Fabric Language Kotlin are installed from Modrinth by
-`apps/kind_dev/minecraft-values.yaml`.
+Fabric API and Fabric Language Kotlin come from Modrinth
+(`apps/kind_dev/minecraft-values.yaml`).
