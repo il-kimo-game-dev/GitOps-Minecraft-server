@@ -76,13 +76,6 @@ spec:
             enabled: true
             port: 7458
             type: ClusterIP
-        - name: bluemap
-          containerPort: 8100
-          protocol: TCP
-          service:
-            enabled: true
-            port: 8100
-            type: ClusterIP
 
       rcon:
         enabled: true
@@ -99,7 +92,6 @@ spec:
       #   - "https://github.com/gnembon/fabric-carpet/releases/download/1.4.194/fabric-carpet-1.21.11-1.4.194+v251223.jar"
       #   #- "https://cdn.modrinth.com/data/6FtRfnLg/versions/QyuEXDMC/do_a_barrel_roll-fabric-3.8.3%2B1.21.11.jar"
       #   #- "https://cdn.modrinth.com/data/IwCkru1D/versions/CqAskfnS/cicada-lib-0.14.3%2B1.21.9-1.21.10.jar" # Dipendenza do a barrel roll
-      #   - "https://cdn.modrinth.com/data/swbUV1cr/versions/gpuTeXXq/bluemap-5.15-fabric.jar"
       #   - "https://cdn.modrinth.com/data/zQhsx8KF/versions/wdbe92T5/servux-fabric-1.21.11-0.9.2.jar"
       #   - "https://cdn.modrinth.com/data/uCdwusMi/versions/GT3Bm3GN/DistantHorizons-2.4.5-b-1.21.11-fabric-neoforge.jar"
       #   - "https://cdn.modrinth.com/data/vz3NiXrd/versions/OqrILcxr/bat-membrane-v3.1.2.jar"

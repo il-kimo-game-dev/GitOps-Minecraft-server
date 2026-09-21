@@ -14,22 +14,3 @@ spec:
           port: 7458
   tls:
     certResolver: letsencrypt
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: minecraft-bluemap
-  namespace: minecraft
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`minekanf.vecchia.lol`)
-      kind: Rule
-      middlewares:
-        - name: bluemap-basicauth
-      services:
-        - name: minecraft-server-bluemap
-          port: 8100
-  tls:
-    certResolver: letsencrypt
