@@ -2,16 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../base/minecraft
+  - server-icon.yaml
 patches:
   - path: minecraft-values.yaml
     target:
       kind: HelmRelease
       name: minecraft-server
-configMapGenerator:
-  - name: minecraft-server-icon
-    namespace: minecraft
-    files:
-      - server-icon.png
-generatorOptions:
-  # The HelmRelease values reference the name, so it must be stable
-  disableNameSuffixHash: true
